@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 
 class FileWriter:
-    pass
+    def send_data(self, data, date_time):
+        pass
+
 
 print("sss")
