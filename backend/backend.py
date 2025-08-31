@@ -41,7 +41,7 @@ def upload():
         os.makedirs(machine_folder)
 
     filename = generate_log_filename()
-    file_path = f"/{machine_folder}"
+    file_path = os.path.join(machine_folder, filename)
 
     with open(file_path, "w", encoding="utf-8") as f:
         f.write(log_data)
