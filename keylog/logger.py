@@ -1,5 +1,4 @@
-import datetime
-import socket
+import datetime, socket
 
 class EventLogger:
     def __init__(self):
@@ -7,9 +6,13 @@ class EventLogger:
         self.hostname = socket.gethostname()
 
     def add_event(self, text: str):
-        """ מוסיף אירוע עם טקסט, זמן, ושם מחשב """
+        """מוסיף אירוע חדש"""
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        event = f"{timestamp} | {self.hostname} | {text}"
+        event = {
+            "time": timestamp,
+            "host": self.hostname,
+            "event": text
+        }
         self.events.append(event)
 
     def get_events(self):

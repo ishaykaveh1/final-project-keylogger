@@ -1,44 +1,35 @@
 import time
-import threading
 from logger import EventLogger
-from writer import EncryptedFileWriter
+from writer import EncryptedJSONWriter
 from sender import FileSender
 
-logger = EventLogger()
-writer = EncryptedFileWriter()
-sender = FileSender()
-
-INTERVAL = 10  # כל כמה שניות לשמור ולשלוח
-
-def collect_events():
-    """ סימולציה - הוספת אירועים לרשימה """
-    for i in range(3):
-        logger.add_event(f"Simulated event {i+1}")
-        time.sleep(2)
-
-def save_and_send():
-    """ שמירת אירועים לקובץ ושליחה לשרת """
-    events = logger.get_events()
-    if events:
-        writer.save_events(events)
-        logger.clear_events()
-        sender.send_file(writer.filename)
-    else:
-        print("אין אירועים לשמור.")
-
-    # קריאה חוזרת של הפונקציה בעוד INTERVAL שניות
-    threading.Timer(INTERVAL, save_and_send).start()
-
 def main():
-    # התחלת איסוף אירועים ברקע
-    threading.Thread(target=collect_events, daemon=True).start()
+    logger = EventLogger()
+    writer = EncryptedJSONWriter()
+    sender = FileSender()
 
-    # התחלת טיימר ראשוני
-    save_and_send()
+    print("📡 התחלת איסוף אירועים...")
 
-    # שומר את התוכנית רצה
     while True:
-        time.sleep(1)
+        # סימולציה של איסוף אירועים
+        logger.add_event("משתמש לחץ על כפתור")
+        logger.add_event("התקבלה בקשה מהדפדפן")
+
+        # קבלת האירועים שנאספו
+        events = logger.get_events()
+        if events:
+            # שמירה ל־JSON מוצפן
+            writer.save_events(events)
+            print(f"✅ נשמרו {len(events)} אירועים לקובץ מוצפן.")
+
+            # שליחת הקובץ לשרת Flask
+            sender.send_file("events.json.enc")
+
+            # ניקוי האירועים מהזיכרון
+            logger.clear_events()
+
+        # המתנה לפני הסיבוב הבא
+        time.sleep(10)  # כל 10 שניות
 
 if __name__ == "__main__":
     main()

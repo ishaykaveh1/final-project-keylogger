@@ -1,8 +1,8 @@
 from cryptography.fernet import Fernet
-import os
+import os, json
 
-class EncryptedFileWriter:
-    def __init__(self, filename="events.enc", keyfile="secret.key"):
+class EncryptedJSONWriter:
+    def __init__(self, filename="events.json.enc", keyfile="secret.key"):
         self.filename = filename
         self.keyfile = keyfile
         self.key = self._load_or_generate_key()
@@ -19,10 +19,10 @@ class EncryptedFileWriter:
             return key
 
     def save_events(self, events):
-        """שומר אירועים לקובץ בצורה מוצפנת"""
+        """שומר אירועים לקובץ JSON מוצפן"""
         if not events:
             return
-        data = "\n".join(events).encode("utf-8")
-        encrypted = self.cipher.encrypt(data)
+        json_data = json.dumps(events, ensure_ascii=False, indent=2)
+        encrypted = self.cipher.encrypt(json_data.encode("utf-8"))
         with open(self.filename, "ab") as f:
             f.write(encrypted + b"\n")
