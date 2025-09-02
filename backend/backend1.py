@@ -65,7 +65,7 @@ def upload():
     if not data or "machine_info" not in data or "data" not in data or "encryption_key" not in data:
         return jsonify({"error": "Invalid payload: machine, data, and encryption_key are required"}), 400
 
-    machine = data["machine_info"]["machine"]
+    machine = data["machine_info"]["hostname"]
     encrypted_b64_data = data["data"]  # This is the Base64 string
     encryption_key = data["encryption_key"]
 
