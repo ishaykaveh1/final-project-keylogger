@@ -21,3 +21,4 @@ class Encryptor:
 
     def decrypt(self, encrypted: bytes) -> str:
         decrypted_bytes = self._xor(encrypted)
+        return decrypted_bytes

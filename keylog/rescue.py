@@ -1,20 +1,26 @@
-from cryptography.fernet import Fernet
-import json
+import sys
 
-def decrypt_file(enc_file="events.json.enc", key_file="secret.key"):
-    with open(key_file, "rb") as f:
-        key = f.read()
-    cipher = Fernet(key)
+class Encryptor:
+    def __init__(self, key: int):
+        self.key = key
 
-    with open(enc_file, "rb") as f:
-        lines = f.readlines()
+    def encrypt(self, text: str) -> str:
+        return ''.join(chr(ord(c) ^ self.key) for c in text)
 
-    for line in lines:
-        line = line.strip()
-        if line:
-            decrypted = cipher.decrypt(line)
-            data = json.loads(decrypted.decode("utf-8"))
-            print(json.dumps(data, indent=2, ensure_ascii=False))
+    def decrypt(self, text: str) -> str:
+        return self.encrypt(text)  # XOR סימטרי
+
+def decrypt_file(enc_file, key):
+    encryptor = Encryptor(int(key))
+    with open(enc_file, "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if line:
+                decrypted = encryptor.decrypt(line)
+                print(decrypted)
 
 if __name__ == "__main__":
-    decrypt_file()
+    if len(sys.argv) != 3:
+        print("שימוש: python rescue.py <נתיב_קובץ> <מפתח>")
+        sys.exit(1)
+    decrypt_file(sys.argv[1], sys.argv[2])

