@@ -1,0 +1,27 @@
+{
+    "system": "Windows",
+    "release": "10",
+    "version": "10.0.19045",
+    "machine": "AMD64",
+    "processor": "Intel64 Family 6 Model 158 Stepping 9, GenuineIntel",
+    "cpu_count": 8,
+    "cpu_usage_percent": 16.9,
+    "memory": {
+        "total": 8212598784,
+        "available": 516628480,
+        "percent": 93.7,
+        "used": 7695970304,
+        "free": 516628480
+    },
+    "disk": {
+        "total": 254917042176,
+        "used": 192831221760,
+        "free": 62085820416,
+        "percent": 75.6
+    },
+    "boot_time": 1756463866.7904172,
+    "hostname": "Administrator",
+    "username": "shelly",
+    "local_ip": "192.168.111.1",
+    "public_ip": "213.151.47.254"
+}
