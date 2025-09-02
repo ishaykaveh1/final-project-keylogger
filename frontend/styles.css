@@ -49,6 +49,11 @@ section {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
 }
+/* Add this to your styles.css file */
+.highlight {
+    background-color: yellow;
+    font-weight: bold;
+}
 
 section:hover {
     transform: translateY(-5px);
