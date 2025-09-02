@@ -1,0 +1,142 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f4f8;
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #007bff, #00c6ff);
+    color: white;
+    border-radius: 10px;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+header p {
+    font-size: 1.2em;
+}
+
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+}
+
+section {
+    flex: 1;
+    min-width: 300px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+section:hover {
+    transform: translateY(-5px);
+}
+
+h2 {
+    font-size: 1.8em;
+    color: #007bff;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+}
+
+ul {
+    list-style-type: none;
+}
+
+li {
+    background: #e9ecef;
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+}
+
+li:hover {
+    background: #007bff;
+    color: white;
+    box-shadow: 0 2px 10px rgba(0, 123, 255, 0.3);
+}
+
+li::before {
+    content: '🖥️';
+    margin-right: 10px;
+    font-size: 1.2em;
+}
+
+pre#content-area {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 0.95em;
+    border: 1px solid #dee2e6;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+#additional-info {
+    margin-top: 20px;
+}
+
+#additional-info ul li {
+    background: #ffeaa7;
+    color: #d63031;
+}
+
+#additional-info ul li:hover {
+    background: #d63031;
+    color: white;
+}
+
+#additional-info ul li::before {
+    content: '⚠️';
+}
+
+footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 20px;
+    background: #343a40;
+    color: white;
+    border-radius: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    main {
+        flex-direction: column;
+    }
+
+    header {
+        padding: 30px 15px;
+    }
+}
+}

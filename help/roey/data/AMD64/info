@@ -1,0 +1,27 @@
+{
+    "system": "Windows",
+    "node_name": "LAPTOP-38OA98OF",
+    "release": "10",
+    "version": "10.0.19045",
+    "machine": "AMD64",
+    "processor": "AMD64 Family 23 Model 24 Stepping 1, AuthenticAMD",
+    "cpu_count": 8,
+    "cpu_usage_percent": 66.7,
+    "memory": {
+        "total": 6382497792,
+        "available": 375701504,
+        "percent": 94.1,
+        "used": 6006796288,
+        "free": 375701504
+    },
+    "disk": {
+        "total": 255187742720,
+        "used": 142996807680,
+        "free": 112190935040,
+        "percent": 56.0
+    },
+    "boot_time": 1756707976.855642,
+    "hostname": "LAPTOP-38OA98OF",
+    "local_ip": "192.168.56.1",
+    "public_ip": "46.210.229.195"
+}

