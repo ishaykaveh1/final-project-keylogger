@@ -107,7 +107,29 @@ def upload():
         return jsonify({"error": f"Failed to write to file: {str(e)}"}), 500
 
     return jsonify({"status": "success", "file": datafile}), 200
+commands = {}  # In-memory storage for commands per machine
 
+@app.route('/api/command/<name>', methods=['POST'])
+def set_command(name):
+    data = request.get_json()
+    if not data or "command" not in data:
+        return jsonify({"error": "Invalid payload: command required"}), 400
+    cmd = data["command"]
+    if cmd not in ["start", "stop"]:
+        return jsonify({"error": "Invalid command"}), 400
+    commands[name] = cmd
+    return jsonify({"message": f"Command '{cmd}' set for {name}"})
+
+@app.route('/api/command/<name>', methods=['GET'])
+def get_command(name):
+    cmd = commands.get(name, "none")
+    # Optionally clear after reading: del commands[name]
+    return jsonify({"command": cmd})
+
+@app.route('/api/status/<name>', methods=['GET'])
+def get_status(name):
+    # This is placeholder; implement actual status tracking if needed
+    return jsonify({"status": "running" if commands.get(name) == "start" else "stopped"})
 
 if __name__ == '__main__':
     app.run(host="127.0.0.1", port=5000, debug=True)
