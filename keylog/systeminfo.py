@@ -3,6 +3,9 @@ import os
 import psutil
 import socket
 import requests
+import getpass
+
+user = getpass.getuser()
 
 
 def get_system_info():
@@ -10,7 +13,6 @@ def get_system_info():
 
     # System / OS
     info["system"] = platform.system()
-    info["node_name"] = platform.node()
     info["release"] = platform.release()
     info["version"] = platform.version()
     info["machine"] = platform.machine()
@@ -26,6 +28,7 @@ def get_system_info():
     # Network - local IP
     hostname = socket.gethostname()
     info["hostname"] = hostname
+    info['username'] = user
     try:
         info["local_ip"] = socket.gethostbyname(hostname)
     except Exception:
