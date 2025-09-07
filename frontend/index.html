@@ -20,15 +20,23 @@
         </section>
         
         <section id="computer-content">
-    <h2>Computer Content</h2>
-    <div class="search-container">
-        <input type="text" id="search-input" placeholder="Search file content...">
-        <button onclick="searchContent()">Search</button>
-    </div>
-    <pre id="content-area">Select a computer to view its content.</pre>
-    <div id="additional-info" style="display: none;">
-        <h3>Active Viruses and IPs</h3>
-        <ul id="virus-list"></ul>
+            <h2>Computer Content</h2>
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Search file content...">
+                <button onclick="searchContent()">Search</button>
+            </div>
+            <pre id="content-area">Select a computer to view its content.</pre>
+            <div id="additional-info" style="display: none;">
+            </div>
+        </section>
+
+        <section id="script-control-section">
+            <h2>Python Script Status</h2>
+            <div id="control-panel">
+                <p id="status-message">Fetching status...</p>
+                <button id="start-button" class="control-btn start" style="display: none;">Start Script</button>
+                <button id="stop-button" class="control-btn stop" style="display: none;">Stop Script</button>
+                <button id="disable-button" class="control-btn disable" style="display: none;">Disable Program</button>
             </div>
         </section>
     </main>

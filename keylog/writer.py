@@ -1,5 +1,5 @@
 class FileWriter:
-    def __init__(self, filename="keystrokes.txt"):
+    def __init__(self, filename):
         self.filename = filename
 
     def write_data(self, data: str):

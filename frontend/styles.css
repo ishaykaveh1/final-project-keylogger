@@ -85,7 +85,7 @@ li:hover {
 }
 
 li::before {
-    content: '???';
+    content: '💻';
     margin-right: 10px;
     font-size: 1.2em;
 }
@@ -107,6 +107,32 @@ pre#content-area {
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+.search-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.search-container input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.search-container button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.search-container button:hover {
+    background-color: #0056b3;
 }
 
 .control-btn {
@@ -134,6 +160,15 @@ pre#content-area {
 
 .stop:hover {
     background: #c82333;
+}
+
+.disable {
+    background: #6c757d;
+    color: white;
+}
+
+.disable:hover {
+    background: #5a6268;
 }
 
 .status-message {
