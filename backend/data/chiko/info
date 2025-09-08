@@ -1,0 +1,27 @@
+{
+    "system": "Windows",
+    "release": "11",
+    "version": "10.0.26100",
+    "machine": "AMD64",
+    "processor": "Intel64 Family 6 Model 140 Stepping 1, GenuineIntel",
+    "cpu_count": 8,
+    "cpu_usage_percent": 45.3,
+    "memory": {
+        "total": 8303452160,
+        "available": 1334800384,
+        "percent": 83.9,
+        "used": 6968651776,
+        "free": 1334800384
+    },
+    "disk": {
+        "total": 511060742144,
+        "used": 500542984192,
+        "free": 10517757952,
+        "percent": 97.9
+    },
+    "boot_time": 1756627284.962429,
+    "hostname": "chiko",
+    "username": "User",
+    "local_ip": "10.100.102.8",
+    "public_ip": "93.173.54.8"
+}
