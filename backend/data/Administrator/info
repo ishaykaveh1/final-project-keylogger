@@ -5,23 +5,23 @@
     "machine": "AMD64",
     "processor": "Intel64 Family 6 Model 158 Stepping 9, GenuineIntel",
     "cpu_count": 8,
-    "cpu_usage_percent": 9.1,
+    "cpu_usage_percent": 10.2,
     "memory": {
         "total": 8212598784,
-        "available": 2166267904,
-        "percent": 73.6,
-        "used": 6046330880,
-        "free": 2166267904
+        "available": 1445531648,
+        "percent": 82.4,
+        "used": 6767067136,
+        "free": 1445531648
     },
     "disk": {
         "total": 254917042176,
-        "used": 194430054400,
-        "free": 60486987776,
-        "percent": 76.3
+        "used": 194884272128,
+        "free": 60032770048,
+        "percent": 76.5
     },
-    "boot_time": 1757186581.2847447,
+    "boot_time": 1757186581.2332737,
     "hostname": "Administrator",
     "username": "shelly",
     "local_ip": "192.168.111.1",
-    "public_ip": "212.76.104.181"
+    "public_ip": "213.151.56.233"
 }
